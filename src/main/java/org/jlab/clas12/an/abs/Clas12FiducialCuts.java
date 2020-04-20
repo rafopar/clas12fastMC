@@ -33,7 +33,8 @@ public class Clas12FiducialCuts {
     }
     
     public static void main(String[] args){
-        String filename = "myfile.hipo";
+        //String filename = "myfile.hipo";
+        String filename = "/Work/CLAS12/clas12-trigger/users/rafopar/Recon/Bonus/Validate_FastMCRoads/Data/trigger_011674.hipo";
         
         DetectorManager.getInstance().initFiducial();
         
@@ -49,6 +50,7 @@ public class Clas12FiducialCuts {
         
         while(clas12Event.readNext()==true){
             
+            System.out.println("clas12Event.count() " + clas12Event.count());
             fiducial.apply(clas12Event);
             
         }
