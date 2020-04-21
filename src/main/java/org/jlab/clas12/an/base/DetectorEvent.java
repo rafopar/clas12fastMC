@@ -35,5 +35,5 @@ public interface DetectorEvent {
     public double  getResponse(int type, int detector);
     public void    getPosition(Vector3 v3, int detector, int index);
     
-    
+    public int     getEvNumber();
 }

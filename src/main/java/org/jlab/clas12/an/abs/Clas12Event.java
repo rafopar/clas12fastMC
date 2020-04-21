@@ -25,10 +25,12 @@ public class Clas12Event implements DetectorEvent {
     //-------------------------------------------------
     // These are the banks to be read from data stream
     // Each bank name is configurable....
+    private Bank      confBank   = null;
     private Bank      particleBank   = null;
     private Bank      trajectoryBank = null;
     private Bank      detectorBank   = null;
     
+    private String confBankName        = "RUN::config";
     private String particleBankName    = "REC::Particle";
     private String trajectoryBankName  = "REC::Traj";
     private String detectorBankName    = "REC::Calorimeter";
@@ -54,6 +56,11 @@ public class Clas12Event implements DetectorEvent {
         if(factory.hasSchema(detectorBankName)==true){
             detectorBank = new Bank(factory.getSchema(detectorBankName));
             System.out.println(">>>>> initalizing detector bank : " + detectorBankName);
+        }
+
+        if(factory.hasSchema(confBankName)==true){
+            confBank = new Bank(factory.getSchema(confBankName));
+            System.out.println(">>>>> initalizing the bank : " + confBankName);
         }
     }
     
@@ -137,6 +144,7 @@ public class Clas12Event implements DetectorEvent {
         }
         if(trajectoryBank != null) hipoEvent.read(trajectoryBank);
         if(detectorBank != null) hipoEvent.read(detectorBank);
+        if(confBank != null) hipoEvent.read(confBank);
         return true;
     }
 
@@ -202,6 +210,12 @@ public class Clas12Event implements DetectorEvent {
         if(particleBank!=null) return particleBank.getInt("status",index);
         return -1;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public int getEvNumber(){
+        if( confBank !=null ) return confBank.getInt("event", 0);
+        return -1;
     }
     
 }
