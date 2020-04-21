@@ -86,7 +86,8 @@ public class Clas12FiducialCuts {
 
     public static void main(String[] args) {
         //String filename = "myfile.hipo";
-        String filename = "/Work/CLAS12/clas12-trigger/users/rafopar/Recon/Bonus/Validate_FastMCRoads/Data/trigger_011674.hipo";
+        //String filename = "/Work/CLAS12/clas12-trigger/users/rafopar/Recon/Bonus/Validate_FastMCRoads/Data/trigger_011674.hipo";
+        String filename = "/Work/CLAS12/TCS/Analyze/Analyze_skim_Trains/skim1_5158.hipo";
 //        String filename = "/Users/gavalian/Work/DataSpace/clas12dst/rec_clas_005038.evio.00390-00394.hipo";
 
         DetectorManager.getInstance().initFiducial();
@@ -98,6 +99,8 @@ public class Clas12FiducialCuts {
 
         Clas12Event clas12Event = new Clas12Event(chain);
 
+        
+        
         DetectorFiducialCuts fiducial = new DetectorFiducialCuts();
 
         Clas12FiducialCuts.configure(fiducial);
@@ -106,6 +109,7 @@ public class Clas12FiducialCuts {
         Vector3 vecL = new Vector3();
         Vector3 vecP = new Vector3();
         TCanvas c1 = new TCanvas("c1", 500, 500);
+        //c1.getCanvas().initTimer(1);
         c1.getCanvas().initTimer(500);
 
         c1.divide(2, 2);
@@ -123,11 +127,21 @@ public class Clas12FiducialCuts {
         c1.cd(1).draw(h2r).draw(lineh).draw(linev);
         c1.cd(2).draw(h2a);
         c1.cd(3).draw(h2u).draw(lineh).draw(linev);
+        
+        final int nev = 1000;
+        int iev = 0;
+        
         while (clas12Event.readNext() == true) {
 
-            System.out.println("clas12Event.count() " + clas12Event.count());
+//            System.out.println("clas12Event.count() " + clas12Event.count());
 //            fiducial.apply(clas12Event);
 
+           // if( iev >= nev ){break;}
+
+            iev = iev + 1;
+            
+            System.out.println("The current event number is " + clas12Event.getEvNumber());
+            
             int count = clas12Event.count();
             //System.out.println(">>>>> EVENT particle count = " + count);
             int photonIndex = clas12Event.getIndex(22, 0);
@@ -146,11 +160,11 @@ public class Clas12FiducialCuts {
 
                     clas12Event.getPosition(vecL, 1, photonIndex);
                     clas12Event.getPosition(vecP, 2, photonIndex);
-                    System.out.printf("%3d %5d %12.5f %12.5f %12.5f %12.5f %12.5f %12.5f \n",
+                   /* System.out.printf("%3d %5d %12.5f %12.5f %12.5f %12.5f %12.5f %12.5f \n",
                             statusFid, status,
                             vecL.x(), vecL.y(), vecL.z(),
                             vecP.x(), vecP.y(), vecP.z()
-                    );
+                    );*/
                     if (statusFid < 0) {
                         h2.fill(vecP.x(), vecP.y());
                         h2r.fill(vecL.y(), vecL.z());
